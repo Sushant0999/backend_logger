@@ -1,5 +1,6 @@
 package com.logging.app;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,14 @@ import java.util.List;
 public class LogController {
 
 //    private final String logFilePath = "C:\\Users\\sushant.raj\\Desktop\\catalina.out"; // Local file path
-    private final String logFilePath = "/opt/apache-tomcat-9.0.93/logs/catalina.out"; // Server file path
+    @Value("${logger.file.path}")
+    private String logFilePath; // Server file path
 
     private long previousFilePointer = 0;
 
     @GetMapping("/logs")
     public String getLogsPage(Model model) {
+        System.out.println(logFilePath);
         return "logView";
     }
 
