@@ -1,0 +1,371 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Log Viewer</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: background-color 0.3s, color 0.3s;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #4a4a4a;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        #themeToggle {&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .container {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 800px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0 auto;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        pre {&ndash;&gt;-->
+<!--&lt;!&ndash;            white-space: pre-wrap; /* Wrap long lines */&ndash;&gt;-->
+<!--&lt;!&ndash;            word-wrap: break-word; /* Break words when necessary */&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #f8f8f8;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            overflow: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style-type: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        li {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #e0e0e0;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 10px 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        @media (max-width: 600px) {&ndash;&gt;-->
+<!--&lt;!&ndash;            body {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 0 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Light Theme */&ndash;&gt;-->
+<!--&lt;!&ndash;        body.light {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #f0f0f0;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Dark Theme */&ndash;&gt;-->
+<!--&lt;!&ndash;        body.dark {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #121212;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #ffffff;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        body.dark pre {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #1e1e1e;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        body.dark li {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body class="light">&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <h1>Log File Data</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    <i id="themeToggle" class="fas fa-adjust" title="Toggle Theme"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;    <pre id="logData">Loading...</pre>&ndash;&gt;-->
+<!--&lt;!&ndash;    <h1>Logs</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    <ul id="logList">&ndash;&gt;-->
+<!--&lt;!&ndash;        <li th:each="log : ${logs}" th:text="${log}"></li>&ndash;&gt;-->
+<!--&lt;!&ndash;    </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash; Toast Notification &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div id="notificationToast" class="toast position-fixed top-0 end-0 p-3" style="z-index: 1050" role="alert"&ndash;&gt;-->
+<!--&lt;!&ndash;     aria-live="assertive" aria-atomic="true">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="toast-header">&ndash;&gt;-->
+<!--&lt;!&ndash;        <strong class="me-auto">Notification</strong>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="toast-body">&ndash;&gt;-->
+<!--&lt;!&ndash;        Logs have been updated!&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    // Theme toggle functionality&ndash;&gt;-->
+<!--&lt;!&ndash;    const themeToggle = document.getElementById('themeToggle');&ndash;&gt;-->
+<!--&lt;!&ndash;    themeToggle.onclick = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;        document.body.classList.toggle('dark');&ndash;&gt;-->
+<!--&lt;!&ndash;        document.body.classList.toggle('light');&ndash;&gt;-->
+<!--&lt;!&ndash;        themeToggle.classList.toggle('fa-sun');&ndash;&gt;-->
+<!--&lt;!&ndash;        themeToggle.classList.toggle('fa-moon');&ndash;&gt;-->
+<!--&lt;!&ndash;    };&ndash;&gt;-->
+
+<!--&lt;!&ndash;    let previousLogs = []; // Variable to hold the previous logs&ndash;&gt;-->
+
+<!--&lt;!&ndash;    // Function to fetch logs&ndash;&gt;-->
+<!--&lt;!&ndash;    const fetchLogs = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;        fetch('/logs')&ndash;&gt;-->
+<!--&lt;!&ndash;            .then(response => response.json())&ndash;&gt;-->
+<!--&lt;!&ndash;            .then(data => {&ndash;&gt;-->
+<!--&lt;!&ndash;                // Show toast if logs have changed&ndash;&gt;-->
+<!--&lt;!&ndash;                if (JSON.stringify(previousLogs) !== JSON.stringify(data)) {&ndash;&gt;-->
+<!--&lt;!&ndash;    setTimeout(() => {&ndash;&gt;-->
+<!--&lt;!&ndash;        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('notificationToast'));&ndash;&gt;-->
+<!--&lt;!&ndash;        toastBootstrap.show();  // Show the toast&ndash;&gt;-->
+<!--&lt;!&ndash;    }, 100);  // 100ms delay&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;                document.getElementById('logData').textContent = data.join('\n');&ndash;&gt;-->
+
+<!--&lt;!&ndash;                // Update the logs list in the unordered list&ndash;&gt;-->
+<!--&lt;!&ndash;                const logList = document.getElementById('logList');&ndash;&gt;-->
+<!--&lt;!&ndash;                logList.innerHTML = ''; // Clear previous logs&ndash;&gt;-->
+<!--&lt;!&ndash;                data.forEach(log => {&ndash;&gt;-->
+<!--&lt;!&ndash;                    const li = document.createElement('li');&ndash;&gt;-->
+<!--&lt;!&ndash;                    li.textContent = log;&ndash;&gt;-->
+<!--&lt;!&ndash;                    li.className = 'list-group-item'; // Added for consistent styling&ndash;&gt;-->
+<!--&lt;!&ndash;                    logList.appendChild(li);&ndash;&gt;-->
+<!--&lt;!&ndash;                });&ndash;&gt;-->
+
+<!--&lt;!&ndash;                // Update previousLogs with the current logs&ndash;&gt;-->
+<!--&lt;!&ndash;                previousLogs = data;&ndash;&gt;-->
+<!--&lt;!&ndash;            })&ndash;&gt;-->
+<!--&lt;!&ndash;            .catch(error => {&ndash;&gt;-->
+<!--&lt;!&ndash;                console.error('Error fetching logs:', error);&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('logData').textContent = 'Error loading logs.';&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;    };&ndash;&gt;-->
+
+<!--&lt;!&ndash;    // Fetch logs every 2 seconds&ndash;&gt;-->
+<!--&lt;!&ndash;    setInterval(fetchLogs, 2000);&ndash;&gt;-->
+
+<!--&lt;!&ndash;    // Initial fetch&ndash;&gt;-->
+<!--&lt;!&ndash;    fetchLogs();&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Log Viewer</title>-->
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            margin: 10px;-->
+<!--            background-color: black;-->
+<!--            color: white;-->
+<!--       }-->
+<!--        .container {-->
+<!--            color: darkgreen;-->
+<!--            background-color: black;-->
+<!--            height: 85vh;-->
+<!--            overflow-y: auto;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            border: 2px solid grey;-->
+<!--       }-->
+<!--        pre {-->
+<!--            font-family: 'Nanum Gothic Coding', monospace;-->
+<!--            white-space: pre-wrap;-->
+<!--            word-wrap: break-word;-->
+<!--            font-weight: 700;-->
+<!--            margin: 0;-->
+<!--       }-->
+<!--        #scrollButton {-->
+<!--            position: fixed;-->
+<!--            bottom: 20px;-->
+<!--            right: 20px;-->
+<!--            display: none;-->
+<!--           /* Hidden by default */-->
+<!--            background-color: #007bff;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 10px 15px;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--       }-->
+<!--       /* Custom scrollbar styles */-->
+<!--        .container::-webkit-scrollbar {-->
+<!--            width: 1em;-->
+<!--       }-->
+<!--        .container::-webkit-scrollbar-track {-->
+<!--            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);-->
+<!--            background-color: #333;-->
+<!--       }-->
+<!--        .container::-webkit-scrollbar-thumb {-->
+<!--            border-radius: 10px;-->
+<!--            background: #fff;-->
+<!--            border: 2px solid #333;-->
+<!--           /* To give a nice inner border effect */-->
+<!--       }-->
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    <h1 align="center">Log File Data</h1>-->
+<!--</header>-->
+<!--<div class="container">-->
+<!--    <pre id="logData" style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">Loading...</pre>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    let offset = 0; // Initialize offset to 0-->
+
+<!--    const fetchLogs = () => {-->
+<!--        fetch(`/api/logs?offset=${offset}`)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                const logData = document.getElementById('logData');-->
+<!--                if (data.logs.length > 0) {-->
+<!--                    // Append new logs to the pre element-->
+<!--                    data.logs.forEach(log => {-->
+<!--                        const logLine = document.createTextNode(log + '\n');-->
+<!--                        logData.appendChild(logLine);-->
+<!--                    });-->
+<!--                }-->
+<!--                offset = data.offset; // Update the offset for the next fetch-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error fetching logs:', error);-->
+<!--            });-->
+<!--    };-->
+
+<!--    // Fetch logs every 5 seconds-->
+<!--    setInterval(fetchLogs, 5000);-->
+
+<!--    // Initial fetch-->
+<!--    fetchLogs();-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Log Viewer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 10px;
+            background-color: black;
+            color: white;
+       }
+        .container {
+            color: darkgreen;
+            background-color: black;
+            height: 85vh;
+            overflow-y: auto;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid grey;
+       }
+        pre {
+            font-family: 'Nanum Gothic Coding', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-weight: 700;
+            margin: 0;
+       }
+        #scrollButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+           /* Hidden by default */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+       }
+       /* Custom scrollbar styles */
+        .container::-webkit-scrollbar {
+            width: 1em;
+       }
+        .container::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #333;
+       }
+        .container::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: #fff;
+            border: 2px solid #333;
+           /* To give a nice inner border effect */
+       }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1 align="center">Log File Data</h1>
+</header>
+<div class="container" id="logContainer">
+    <pre id="logData" style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">Loading...</pre>
+</div>
+
+<script>
+    let offset = 0; // Initialize offset to 0
+
+    // Function to scroll to the bottom of the container
+    const scrollToBottom = () => {
+        const logContainer = document.getElementById('logContainer');
+        logContainer.scrollTop = logContainer.scrollHeight;
+    };
+
+    const fetchLogs = () => {
+        fetch(`/api/logs?offset=${offset}`)
+            .then(response => response.json())
+            .then(data => {
+                const logData = document.getElementById('logData');
+                if (data.logs.length > 0) {
+                    // Append new logs to the pre element
+                    data.logs.forEach(log => {
+                        const logLine = document.createTextNode(log + '\n');
+                        logData.appendChild(logLine);
+                    });
+                    scrollToBottom(); // Scroll to the bottom after appending new logs
+                }
+                offset = data.offset; // Update the offset for the next fetch
+            })
+            .catch(error => {
+                console.error('Error fetching logs:', error);
+            });
+    };
+
+    // Fetch logs every 3 seconds
+    setInterval(fetchLogs, 3000);
+
+    // Initial fetch and scroll to bottom
+    fetchLogs();
+    scrollToBottom();
+</script>
+
+</body>
+</html>
