@@ -51,7 +51,7 @@ Running the Compiled JAR First, compile the project, then run the JAR file:
 java -jar target/backend_logger.jar
 ```
 6. Access the Application
-Open your web browser and navigate to http://localhost:8080 to access the application interface.
+Open your web browser and navigate to http://localhost:9191/logs to access the application interface.
 
 7. View the Logs
 Logs will be generated in the specified .txt file or in the default logging location. You can view the logs in real-time through the application's interface or by checking the log files directly.
